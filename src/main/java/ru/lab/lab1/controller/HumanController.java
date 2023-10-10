@@ -24,8 +24,8 @@ public class HumanController {
             String strDate2 = "07.12.1991";
             Date date2 = formatter.parse(strDate2);
 
-            Human u1 = new Human(1L, "Robert", date1, 175, 72);
-            Human u2 = new Human(2L, "Michael", date2, 181, 80);
+            Human u1 = new Human(1L, "Robert", date1, 175.0, 72.0);
+            Human u2 = new Human(2L, "Michael", date2, 181.0, 80.0);
 
             humans.add(u1);
             humans.add(u2);
@@ -48,7 +48,7 @@ public class HumanController {
     }
 
     @PostMapping
-    Human postHuman(@RequestBody Human newHuman) {
+    Human createHuman(@RequestBody Human newHuman) {
         humans.add(newHuman);
         return newHuman;
     }
@@ -57,15 +57,15 @@ public class HumanController {
         return humans.remove(humans.stream()
                 .filter(human -> human.id().equals(humanId))
                 .findAny()
-                .orElse(null));
+                .orElseThrow(IndexOutOfBoundsException::new));
     }
 
     @PutMapping("/{human_id}")
-    Human putHuman(@PathVariable("human_id") Long humanId, @RequestBody Human renewHuman) {
+    Human editHuman(@PathVariable("human_id") Long humanId, @RequestBody Human renewHuman) {
         humans.set(humans.indexOf(humans.stream()
                 .filter(human -> human.id().equals(humanId))
                 .findAny()
-                .orElse(null)), renewHuman);
+                .orElseThrow(IndexOutOfBoundsException::new)), renewHuman);
         return renewHuman;
     }
 

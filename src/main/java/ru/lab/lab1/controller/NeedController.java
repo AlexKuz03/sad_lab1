@@ -12,10 +12,10 @@ public class NeedController {
     private final ArrayList<Need> needs = new ArrayList<>();
 //
     public NeedController() {
-        needs.add(new Need(1L, 1L, "sleep", "H", 8));
+        needs.add(new Need(1L, 1L, "sleep", "H", 8.0));
         needs.add(new Need(2L, 2L, "sleep", "H", 8.5));
         needs.add(new Need(3L, 1L, "water", "L", 1.5));
-        needs.add(new Need(4L, 2L, "water", "L", 2));
+        needs.add(new Need(4L, 2L, "water", "L", 2.0));
     }
 
     @GetMapping
@@ -30,7 +30,7 @@ public class NeedController {
                 .toList();
     }
     @PostMapping
-    Need postNeed(@RequestBody Need newNeed) {
+    Need createNeed(@RequestBody Need newNeed) {
         needs.add(newNeed);
         return newNeed;
     }
@@ -39,15 +39,15 @@ public class NeedController {
         return needs.remove(needs.stream()
                 .filter(human -> human.id().equals(needId))
                 .findAny()
-                .orElse(null));
+                .orElseThrow(IndexOutOfBoundsException::new));
     }
 
     @PutMapping("/{need_id}")
-    Need putNeed(@PathVariable("need_id") Long needId, @RequestBody Need renewNeed) {
+    Need editNeed(@PathVariable("need_id") Long needId, @RequestBody Need renewNeed) {
         needs.set(needs.indexOf(needs.stream()
                 .filter(need -> need.id().equals(needId))
                 .findAny()
-                .orElse(null)), renewNeed);
+                .orElseThrow(IndexOutOfBoundsException::new)), renewNeed);
         return renewNeed;
     }
 }
